@@ -1,6 +1,15 @@
 venv/
 data/
 *.zip
+*.csv
+*.txt
+*.parquet
 .ipynb_checkpoints/
 __pycache__/
 *.pyc
+code/bert_multitask_model/
+code/for_bert/bert_multitask_model/
+catboost_info/
+*.log
+.DS_Store
+code/for_bert/
