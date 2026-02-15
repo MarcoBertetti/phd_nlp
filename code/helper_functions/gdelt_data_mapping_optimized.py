@@ -212,6 +212,11 @@ def process_gdelt_data(df, gadm_gdf, output_dir, num_cpus=8, batch_size=10000):
     print("Merging all processed files...")
     parquet_files = glob.glob(os.path.join(output_dir, "mapped_gdelt_20*.parquet"))
     df_result = pd.concat([pd.read_parquet(f) for f in parquet_files], ignore_index=True)
+    
+    # Convert SQLDATE to numeric to avoid ArrowTypeError
+    if 'SQLDATE' in df_result.columns:
+        df_result['SQLDATE'] = pd.to_numeric(df_result['SQLDATE'], errors='coerce')
+    
     final_output_file = os.path.join(output_dir, "mapped_gdelt_final.parquet")
     df_result.to_parquet(final_output_file, index=False)
     print(f"Final data saved to {final_output_file}")

@@ -166,8 +166,12 @@ def consolidate_files(csv_directory, output_path):
     # --- Replace FIPS with ISO ---
     combined_df["ActionGeo_CountryCode"] = combined_df["ActionGeo_CountryCode"].replace(fips_to_country)
 
-    # --- Convert year to numeric for filtering ---
+    # --- Convert date columns to numeric to avoid ArrowTypeError ---
+    combined_df["SQLDATE"] = pd.to_numeric(combined_df["SQLDATE"], errors="coerce")
     combined_df["Year"] = pd.to_numeric(combined_df["Year"], errors="coerce")
+    combined_df["MonthYear"] = pd.to_numeric(combined_df["MonthYear"], errors="coerce")
+    combined_df["FractionDate"] = pd.to_numeric(combined_df["FractionDate"], errors="coerce")
+    combined_df["DATEADDED"] = pd.to_numeric(combined_df["DATEADDED"], errors="coerce")
 
     # --- Apply country/year filters ---
     combined_df = combined_df[
